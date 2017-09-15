@@ -464,10 +464,11 @@ class LFADS(object):
         fns_out_fac_Ws[d] = makelambda(out_fac_W)
         fns_out_fac_bs[d] =  makelambda(out_fac_b)
 
-    pf_pairs_in_fac_Ws = zip(preds, fns_in_fac_Ws)
-    pf_pairs_in_fac_bs = zip(preds, fns_in_fac_bs)
-    pf_pairs_out_fac_Ws = zip(preds, fns_out_fac_Ws)
-    pf_pairs_out_fac_bs = zip(preds, fns_out_fac_bs)
+    #the following lines were changed to be compatible with Python 3
+    pf_pairs_in_fac_Ws = list(zip(preds, fns_in_fac_Ws)) #was zip(preds, fns_in_fac_Ws)
+    pf_pairs_in_fac_bs = list(zip(preds, fns_in_fac_bs)) #was zip(preds, fns_in_fac_bs)
+    pf_pairs_out_fac_Ws = list(zip(preds, fns_out_fac_Ws)) #was zip(preds, fns_out_fac_Ws)
+    pf_pairs_out_fac_bs = list(zip(preds, fns_out_fac_bs)) #was zip(preds, fns_out_fac_bs)
 
     def _case_with_no_default(pairs):
       def _default_value_fn():
@@ -1105,7 +1106,9 @@ class LFADS(object):
     if bmrem < batch_size:
       bmrem_examples = np.random.choice(range(nexamples),
                                         size=bmrem, replace=False)
-    example_idxs = range(nexamples) + list(bmrem_examples)
+    example_idxs = list(range(nexamples)) + list(bmrem_examples)
+    # #the line above was originally as follows, which is ok for Python 2 but not 3:
+    #example_idxs = range(nexamples) + list(bmrem_examples)
     mixed_example_idxs = np.random.permutation(example_idxs)
     example_idxs_e_x_edivb = np.reshape(mixed_example_idxs, [-1, batch_size])
     return example_idxs_e_x_edivb, bmrem
@@ -1368,7 +1371,7 @@ class LFADS(object):
 
     """
     hps = self.hps
-    all_data_names = datasets.keys()
+    all_data_names = list(datasets.keys()) #was originally 'datasets.keys()', ok for Python 2 but not 3
     data_name = np.random.permutation(all_data_names)[0]
     data_dict = datasets[data_name]
     has_valid_set = True if data_dict['valid_data'] is not None else False

@@ -96,7 +96,7 @@ spikes_b = spikify_data(rates_b, rng, rnn_b['dt'], rnn_b['max_firing_rate'])
 # not the best way to do this but E is small enough
 rates = []
 spikes = []
-for trial in xrange(E):
+for trial in range(E): #was xrange(E) (ok for Python 2 but not 3)
   if rnn_to_use[trial] == 0:
     rates.append(rates_a[trial])
     spikes.append(spikes_a[trial])

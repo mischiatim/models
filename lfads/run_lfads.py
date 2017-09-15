@@ -747,7 +747,9 @@ def main(_):
 
   # also store down the dimensionality of the data
   # - just pull from one set, required to be same for all sets
-  hps.num_steps = datasets.values()[0]['num_steps']
+  hps.num_steps = list(datasets.values())[0]['num_steps']
+  # #the original version of this line was the following one, ok for Python 2 but not 3:
+  # hps.num_steps = datasets.values()[0]['num_steps']
   hps.ndatasets = len(hps.dataset_names)
 
   if hps.num_steps_for_gen_ic > hps.num_steps:
