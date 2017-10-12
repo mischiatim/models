@@ -632,9 +632,9 @@ def write_model_samples(hps, datasets, dataset_name=None, output_fname=None):
   else:
     output_fname = output_fname + "model_runs_" + hps.kind
   if not dataset_name:
-    dataset_name = datasets.keys()[0]
+    dataset_name = list(datasets.keys())[0]
   else:
-    if dataset_name not in datasets.keys():
+    if dataset_name not in list(datasets.keys()):
       raise ValueError("Invalid dataset name '%s'."%(dataset_name))
   model = build_model(hps, kind=hps.kind, datasets=datasets)
   model.write_model_samples(dataset_name, output_fname)
@@ -733,7 +733,7 @@ def main(_):
   train_set = valid_set = None
   if kind in ["train", "posterior_sample_and_average", "prior_sample",
               "write_model_params"]:
-    datasets = load_datasets(hps.data_dir, hps.data_filename_stem)
+      datasets = load_datasets(hps.data_dir, hps.data_filename_stem)
   else:
     raise ValueError('Kind {} is not supported.'.format(kind))
 
